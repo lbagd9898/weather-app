@@ -1,35 +1,18 @@
-// async function getWeatherData(location) {
-//   const response = await fetch(
-//     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=YAK8C7JTH98EU4T9SGMU8TAJK`
-//   );
-//   const weatherData = await response.json();
-//   console.log(weatherData);
-// }
-
 async function getWeatherData(location) {
   const response = await fetch(
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=YAK8C7JTH98EU4T9SGMU8TAJK`
   );
   const weatherData = await response.json();
+  console.log(weatherData);
+  processData(weatherData);
 }
-
-// function getWeatherData(location) {
-//   fetch(
-//     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=YAK8C7JTH98EU4T9SGMU8TAJK`
-//   )
-//     .then(function (response) {
-//       return response.json();
-//     })
-//     .then(function (response) {
-//       return response.json();
-//     });
-// }
 
 function processData(data) {
-  const cond = data.currentConditions.cloudcover;
-  console.log(cond);
+  const conditions = data.currentConditions.conditions;
+  const temp = data.currentConditions.temp;
+  const location = data.address;
+  const displayData = { location, temp, conditions };
+  console.log(displayData);
 }
 
-console.log(getWeatherData("london")).then((weatherData) => {
-  console.log(weatherData);
-});
+getWeatherData("london");
