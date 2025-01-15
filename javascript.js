@@ -5,7 +5,8 @@ const temp = document.querySelector("#temp");
 const conditions = document.querySelector("#conditions");
 const img = document.querySelector("img");
 const toggle = document.querySelector("#toggle");
-let displayTemp = 0;
+let fahrenheitTemp = 0;
+let celsiusTemp = 0;
 
 //retrieve weather data from VisualCrossing API using input location
 async function getWeatherData(location) {
@@ -25,20 +26,28 @@ function processData(data) {
   const conditions = data.currentConditions.conditions;
   const temp = data.currentConditions.temp;
   const location = data.resolvedAddress;
-  displayTemp = data.currentConditions.temp;
+  fahrenheitTemp = data.currentConditions.temp;
+  celsiusTemp = fahrenheightToCelsius(fahrenheitTemp);
   const displayData = { location, temp, conditions };
   console.log(displayData);
   displayWeatherData(displayData);
 }
 
+//takes weather data object and displays it in the content tab
 function displayWeatherData(object) {
   locationHeader.textContent = object.location;
   temp.textContent = "Temperature: " + object.temp + "\u00b0" + "F";
   conditions.textContent = "Conditions: " + object.conditions;
   console.log(object.conditions);
+  resetTempToggle();
   changeImage(object.conditions);
 }
 
+function resetTempToggle() {
+  toggle.checked = false;
+}
+
+//uses giphy api to find an image that coincides with the weather conditions and displays it
 async function changeImage(conditions) {
   const response = await fetch(
     `https://api.giphy.com/v1/gifs/translate?api_key=gYMwWHk9P7vPMBgMMvKCvFmVqSd8KTHY&s=${conditions}`
@@ -48,35 +57,29 @@ async function changeImage(conditions) {
 }
 
 function fahrenheightToCelsius(farenheit) {
-  let celsius = farenheit - (32 * 5) / 9;
+  let celsius = (((farenheit - 32) * 5) / 9).toFixed(1);
   return celsius;
 }
 
-function celsiusToFahrenheit(celsius) {
-  let farenheit = (celsius * 5) / 9 + 32;
-  return farenheit;
-}
-
-function changeTempDisplay(newTemp) {
-  temp.textContent = "Temperature: " + object.temp + "\u00b0" + "F";
+//changes temperature display when toggle switched
+function changeTempDisplay(newTemp, units) {
+  temp.textContent = "Temperature: " + newTemp + "\u00b0" + units;
 }
 
 getWeatherData("new york");
 
+//changes weather data when user searches for a location
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   let location = input.value;
   getWeatherData(location);
 });
 
+//eventlistener for toggle to change temperature between fahrenheit and celsius
 toggle.addEventListener("change", (e) => {
   if (e.target.checked) {
-    let newTemp = fahrenheightToCelsius(displayTemp);
-    displayTemp = newTemp;
-    changeTempDisplay(newTemp);
+    changeTempDisplay(celsiusTemp, "C");
   } else {
-    let newTemp = celsiusToFahrenheit(displayTemp);
-    displayTemp = newTemp;
-    changeTempDisplay(newTemp);
+    changeTempDisplay(fahrenheitTemp, "F");
   }
 });
