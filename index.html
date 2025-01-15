@@ -17,22 +17,27 @@
         </div>
         <div class="buttons">
           <button id="item-submit">Search</button>
-
-          <button class="close" data-target="#modal2">Close</button>
         </div>
       </form>
     </div>
     <div id="content">
-      <h2>London</h2>
-      <div class="weather">
+      <div id="info">
+        <div>
+          <h2 id="location-header">London</h2>
+        </div>
         <div>
           <div id="temp">79 degrees</div>
           <div id="conditions">Conditions</div>
         </div>
-        <div id="image">
-          <img src="sunny.jpg" alt="sunny" />
-        </div>
       </div>
+      <div id="image">
+        <img src="sunny.jpg" alt="sunny" />
+      </div>
+    </div>
+    <div class="toggle">
+      <div>&deg;F</div>
+      <input id="toggle" type="checkbox" />
+      <div>&deg;C</div>
     </div>
     <script src="javascript.js"></script>
   </body>
